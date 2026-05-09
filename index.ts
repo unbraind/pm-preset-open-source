@@ -1,4 +1,4 @@
-import { defineExtension } from "@unbrained/pm-cli/sdk";
+import { defineExtension, type CommandHandlerContext } from "@unbrained/pm-cli/sdk";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -91,42 +91,41 @@ const TEMPLATES: Record<string, unknown> = {
 // ---------------------------------------------------------------------------
 
 export default defineExtension({
-  commands: [
-    {
+  activate(api) {
+    api.registerCommand({
       name: "oss-setup",
       description:
         "Apply the open-source pm preset: writes settings.json and installs contributor-friendly templates.",
       flags: [
         {
-          name: "force",
+          long: "force",
           short: "f",
           type: "boolean",
           description: "Overwrite existing settings.json without prompting.",
-          default: false,
         },
         {
-          name: "dry-run",
+          long: "dry-run",
           short: "n",
           type: "boolean",
           description: "Preview changes without writing any files.",
-          default: false,
         },
         {
-          name: "prefix",
+          long: "prefix",
           short: "p",
           type: "string",
           description:
             "Override the id_prefix written to settings.json (default: oss-).",
-          default: "oss-",
         },
       ],
 
-      async run({ flags, logger }) {
-        const force = flags["force"] as boolean;
-        const dryRun = flags["dry-run"] as boolean;
-        const prefix = (flags["prefix"] as string) || "oss-";
+      async run(context: CommandHandlerContext) {
+        const { options, pm_root } = context;
+        const force = Boolean(options["force"]);
+        const dryRun = Boolean(options["dry-run"]);
+        const prefix = (options["prefix"] as string) || "oss-";
 
-        const pmDir = path.resolve(process.cwd(), ".agents", "pm");
+        const cwd = pm_root ?? process.cwd();
+        const pmDir = path.resolve(cwd, ".agents", "pm");
         const settingsPath = path.join(pmDir, "settings.json");
         const templatesDir = path.join(pmDir, "templates");
 
@@ -134,7 +133,7 @@ export default defineExtension({
         // 1. Verify .agents/pm/ exists
         // ------------------------------------------------------------------
         if (!fs.existsSync(pmDir)) {
-          logger.error(
+          console.error(
             `pm workspace not found at ${pmDir}.\n` +
               `Run 'pm init' first to initialise the workspace, then re-run 'pm oss-setup'.`
           );
@@ -152,25 +151,25 @@ export default defineExtension({
         const settingsExists = fs.existsSync(settingsPath);
 
         if (settingsExists && !force) {
-          logger.warn(
+          console.warn(
             `settings.json already exists at ${settingsPath}.\n` +
               `Use --force to overwrite it.`
           );
         } else {
           if (dryRun) {
-            logger.info(
+            console.log(
               `[dry-run] Would write settings.json to ${settingsPath}`
             );
           } else {
             if (settingsExists && force) {
-              logger.warn(`Overwriting existing settings.json (--force).`);
+              console.warn(`Overwriting existing settings.json (--force).`);
             }
             fs.writeFileSync(
               settingsPath,
               JSON.stringify(effectiveSettings, null, 2) + "\n",
               "utf8"
             );
-            logger.info(`Wrote settings.json to ${settingsPath}`);
+            console.log(`Wrote settings.json to ${settingsPath}`);
           }
         }
 
@@ -178,17 +177,17 @@ export default defineExtension({
         // 3. Create templates/ directory and write template files
         // ------------------------------------------------------------------
         if (dryRun) {
-          logger.info(
+          console.log(
             `[dry-run] Would create templates directory at ${templatesDir}`
           );
           for (const filename of Object.keys(TEMPLATES)) {
-            logger.info(
+            console.log(
               `[dry-run] Would write template ${filename} to ${path.join(templatesDir, filename)}`
             );
           }
         } else {
           fs.mkdirSync(templatesDir, { recursive: true });
-          logger.info(`Created templates directory at ${templatesDir}`);
+          console.log(`Created templates directory at ${templatesDir}`);
 
           for (const [filename, template] of Object.entries(TEMPLATES)) {
             const templatePath = path.join(templatesDir, filename);
@@ -197,20 +196,20 @@ export default defineExtension({
               JSON.stringify(template, null, 2) + "\n",
               "utf8"
             );
-            logger.info(`Wrote template: ${filename}`);
+            console.log(`Wrote template: ${filename}`);
           }
         }
 
         // ------------------------------------------------------------------
         // 4. Print next steps
         // ------------------------------------------------------------------
-        logger.success(
+        console.log(
           dryRun
             ? "Dry-run complete — no files were written."
             : "Open-source preset applied successfully!"
         );
 
-        logger.info(
+        console.log(
           [
             "",
             "Next steps:",
@@ -225,6 +224,6 @@ export default defineExtension({
           ].join("\n")
         );
       },
-    },
-  ],
+    });
+  },
 });
