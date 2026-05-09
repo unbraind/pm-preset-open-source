@@ -1,0 +1,7 @@
+{
+  "name": "pm-preset-open-source",
+  "version": "0.1.0",
+  "description": "Open-source project pm workspace preset — issue triage, milestone releases, contributor-friendly templates",
+  "entry": "index.js",
+  "capabilities": ["commands"]
+}
