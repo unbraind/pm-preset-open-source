@@ -4,6 +4,7 @@
   "description": "Open-source project pm workspace preset \u2014 issue triage, milestone releases, contributor-friendly templates",
   "entry": "./dist/index.js",
   "capabilities": [
-    "commands"
+    "commands",
+    "schema"
   ]
 }
