@@ -2,6 +2,14 @@
   "name": "pm-preset-open-source",
   "version": "0.1.0",
   "description": "Open-source project pm workspace preset — issue triage, milestone releases, contributor-friendly templates",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unbraind/pm-preset-open-source.git"
+  },
+  "bugs": {
+    "url": "https://github.com/unbraind/pm-preset-open-source/issues"
+  },
+  "homepage": "https://github.com/unbraind/pm-preset-open-source#readme",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
