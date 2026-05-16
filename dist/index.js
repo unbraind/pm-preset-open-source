@@ -1,6 +1,6 @@
-function defineExtension(m){return m}
 import fs from "node:fs";
 import path from "node:path";
+const defineExtension = ((extension) => extension);
 // ---------------------------------------------------------------------------
 // Settings constant
 // ---------------------------------------------------------------------------

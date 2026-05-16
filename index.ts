@@ -1,6 +1,8 @@
-import { defineExtension, type CommandHandlerContext } from "@unbrained/pm-cli/sdk";
+import type { defineExtension as defineExtensionType, CommandHandlerContext  } from "@unbrained/pm-cli/sdk";
 import fs from "node:fs";
 import path from "node:path";
+
+const defineExtension: typeof defineExtensionType = ((extension: any) => extension) as any;
 
 // ---------------------------------------------------------------------------
 // Settings constant
