@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Add bun-install verification to release workflow ([pm-preset-open-source-nfzb](https://github.com/unbraind/pm-preset-open-source/blob/main/.agents/pm/tasks/pm-preset-open-source-nfzb.toon))
+
 ## 2026.05.26 - 2026-05-26
 
 ### Fixed
