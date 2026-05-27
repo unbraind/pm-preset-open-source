@@ -1,6 +1,6 @@
 {
   "name": "pm-preset-open-source",
-  "version": "2026.5.26",
+  "version": "2026.5.27",
   "description": "Open-source project pm workspace preset — issue triage, milestone releases, contributor-friendly templates",
   "author": "@unbraind",
   "entry": "./dist/index.js",
