@@ -1,12 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Add publish retry + provenance fallback to release workflow ([pm-preset-open-source-7re4](https://github.com/unbraind/pm-preset-open-source/blob/main/.agents/pm/tasks/pm-preset-open-source-7re4.toon))
+
 ## 2026.05.27 - 2026-05-27
 
 ### Added
 
 - Add bun-install verification to release workflow ([pm-preset-open-source-nfzb](https://github.com/unbraind/pm-preset-open-source/blob/main/.agents/pm/tasks/pm-preset-open-source-nfzb.toon))
-
-## 2026.05.26 - 2026-05-26
 
 ### Fixed
 
